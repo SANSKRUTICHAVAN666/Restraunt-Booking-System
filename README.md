@@ -12,12 +12,12 @@ DineBridge is a web-based platform that allows users to discover restaurants, vi
 
 
 ## Technologies Used
-HTML5<br>
-CSS3<br>
-JavaScript<br>
-Firebase Authentication<br>
-Firebase Firestore Database<br>
-Firebase Hosting<br>
+- HTML5<br>
+- CSS3<br>
+- JavaScript<br>
+- Firebase Authentication<br>
+- Firebase Firestore Database<br>
+- Firebase Hosting<br>
 
 
 ## System Modules
