@@ -1,6 +1,7 @@
 # DineBridge – Restaurant Discovery & Table Booking System<br>
 ## Overview
-DineBridge is a web-based platform that allows users to discover restaurants, view menus, and book tables online. The system also provides restaurant owners with tools to manage menus, reservations, and customer bookings efficiently.
+DineBridge is a web based platform that allows users to discover restaurants, check real time table availability, book tables and browse menus as well as check the ingredients of the particular dish in a menu. The system also enables owners to manage menus, reservations and orders through a dashboard improving efficiency, customer waiting time and transparency of the menu. 
+
 
 ## Features
 - Restaurant discovery and browsing
