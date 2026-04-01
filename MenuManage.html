@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Management - DineBridge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ff6b35;
+        }
+
+        .add-item-btn {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .add-item-btn:hover {
+            background: #e55a2b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .menu-categories {
+            display: grid;
+            gap: 30px;
+        }
+
+        .category-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .category-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #ff6b35;
+            display: inline-block;
+        }
+
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-item {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover {
+            border-color: #ff6b35;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.1);
+        }
+
+        .item-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .item-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ff6b35;
+            margin-bottom: 10px;
+        }
+
+        .item-ingredients {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover {
+            color: #ff6b35;
+        }
+
+        .modal h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #ff6b35;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #e55a2b;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .menu-items {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                margin: 10% auto;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Menu Management</h1>
+      <button class="add-item-btn" onclick="openModal()">+ Add Item</button>
+    </div>
+    <div class="menu-categories" id="menuCategories"></div>
+  </div>
+
+  <!-- Modal -->
+  <div id="itemModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>Add New Menu Item</h2>
+      <form id="itemForm">
+        <div class="form-group">
+          <label for="dishName">Dish Name</label>
+          <input type="text" id="dishName" required>
+        </div>
+        <div class="form-group">
+          <label for="price">Price (₹)</label>
+          <input type="number" id="price" min="0" step="0.01" required>
+        </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" required>
+            <option value="">Select Category</option>
+            <option value="Starters">Starters</option>
+            <option value="Main Course">Main Course</option>
+            <option value="Desserts">Desserts</option>
+            <option value="Beverages">Beverages</option>
+            <option value="Chinese">Chinese</option>
+            <option value="Indian">Indian</option>
+            <option value="Continental">Continental</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="ingredients">Ingredients</label>
+          <textarea id="ingredients" required></textarea>
+        </div>
+        <div class="form-buttons">
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+  apiKey: "AIzaSyCyA2J8LvC5g7AytMe-Z9JpTQXCawa7Fao",
+  authDomain: "dinebridge-c997d.firebaseapp.com",
+  projectId: "dinebridge-c997d",
+  storageBucket: "dinebridge-c997d.appspot.com",
+  messagingSenderId: "36472278990",
+  appId: "1:36472278990:web:6c407e4e9bac73fd7ea59f",
+  measurementId: "G-TJVBF3Y8CK"
+};
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    let currentUser = null;
+    let menuItems = {};
+
+    // 🔹 Load menu when user logged in
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUser = user;
+        await loadMenu();
+      } else {
+        alert("Please login first!");
+      }
+    });
+
+    async function loadMenu() {
+      if (!currentUser) return;
+      const docRef = doc(db, "restaurants", currentUser.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        menuItems = docSnap.data().menu || {};
+        renderMenuItems();
+      } else {
+        menuItems = {};
+        renderMenuItems();
+      }
+    }
+
+    // 🔹 Save item to Firestore
+    async function saveMenu() {
+      if (!currentUser) return;
+      const docRef = doc(db, "restaurants", currentUser.uid);
+      await setDoc(docRef, { email: currentUser.email, menu: menuItems }, { merge: true });
+    }
+
+    // Modal
+    window.openModal = function() {
+      document.getElementById('itemModal').style.display = 'block';
+      document.getElementById('itemForm').reset();
+    };
+    window.closeModal = function() {
+      document.getElementById('itemModal').style.display = 'none';
+    };
+    window.onclick = function(event) {
+      const modal = document.getElementById('itemModal');
+      if (event.target == modal) closeModal();
+    };
+
+    // Form submit
+    document.getElementById('itemForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const dishName = document.getElementById('dishName').value;
+      const price = parseFloat(document.getElementById('price').value);
+      const category = document.getElementById('category').value;
+      const ingredients = document.getElementById('ingredients').value;
+
+      const menuItem = { name: dishName, price, ingredients, category };
+      if (!menuItems[category]) menuItems[category] = [];
+      menuItems[category].push(menuItem);
+
+      renderMenuItems();
+      await saveMenu();
+      closeModal();
+      showSuccessMessage("Item added successfully!");
+    });
+
+    // Render
+    function renderMenuItems() {
+      const container = document.getElementById('menuCategories');
+      container.innerHTML = '';
+      if (Object.keys(menuItems).length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div style="font-size: 4rem; margin-bottom: 20px; color: #ccc;">🍽️</div>
+            <h3>No menu items yet</h3>
+            <p>Start by adding your first menu item!</p>
+          </div>
+        `;
+        return;
+      }
+      for (const category in menuItems) {
+        const categorySection = document.createElement('div');
+        categorySection.className = 'category-section';
+        categorySection.innerHTML = `
+          <h3 class="category-title">${category}</h3>
+          <div class="menu-items">
+            ${menuItems[category].map(item => `
+              <div class="menu-item">
+                <div class="item-name">${item.name}</div>
+                <div class="item-price">₹${item.price.toFixed(2)}</div>
+                <div class="item-ingredients"><strong>Ingredients:</strong> ${item.ingredients}</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+        container.appendChild(categorySection);
+      }
+    }
+
+    // Success message
+    function showSuccessMessage(message) {
+      const successDiv = document.createElement('div');
+      successDiv.style.cssText = `
+        position: fixed; top: 20px; right: 20px;
+        background: #28a745; color: white;
+        padding: 15px 25px; border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        z-index: 1001; font-weight: 600;
+      `;
+      successDiv.textContent = message;
+      document.body.appendChild(successDiv);
+      setTimeout(() => successDiv.remove(), 3000);
+    }
+
+    // Init
+    renderMenuItems();
+  </script>
+</body>
+</html>

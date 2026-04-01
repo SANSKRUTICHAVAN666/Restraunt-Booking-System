@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Restaurant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">     
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #3b82f6, #2563eb);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .form-container {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: #3b82f6;
+            font-size: 1.5rem;
+        }
+        
+        .subsection {
+            margin-bottom: 25px;
+        }
+        
+        .subsection-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .subsection-title i {
+            color: #3b82f6;
+            font-size: 1.1rem;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #4b5563;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .input-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .tag {
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .tag i {
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .tag-input {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .tag-input input {
+            flex: 1;
+        }
+        
+        .tag-input button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .tag-input button:hover {
+            background: #2563eb;
+        }
+        
+        .map-placeholder {
+            height: 200px;
+            background: #f3f4f6;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #6b7280;
+            margin-top: 15px;
+            border: 2px dashed #d1d5db;
+        }
+        
+        .map-placeholder i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #9ca3af;
+        }
+        
+        .hours-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .day-hours {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .day-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #374151;
+        }
+        
+        .time-inputs {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .time-inputs input {
+            flex: 1;
+        }
+        
+        .upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            background: #f9fafb;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+        }
+        
+        .upload-area i {
+            font-size: 3rem;
+            color: #9ca3af;
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            font-size: 1.1rem;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+        
+        .upload-subtext {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+        
+        .uploaded-photos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .photo-item {
+            height: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .photo-remove {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(239, 68, 68, 0.8);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .save-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            margin: 30px auto 10px;
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+        }
+        
+        .save-btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(59, 130, 246, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .hours-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .upload-area {
+                padding: 25px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Add New Restaurant</h1>
+        </header>
+        
+        <div class="form-container">
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-info-circle"></i>
+                    Basic Information
+                </h2>
+                <p class="subsection-title">Provide the required details about your restaurant.</p>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">
+                        <i class="fas fa-utensils"></i>
+                        Restaurant Name
+                    </h3>
+                    <div class="input-group">
+                        <input type="text" id="restaurantName" >
+                    </div>
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">
+                        <i class="fas fa-align-left"></i>
+                        Description
+                    </h3>
+                    <div class="input-group">
+                        <textarea id="description" placeholder="A brief description of your restaurant, cuisine, and atmosphere.">A fine dining establishment offering a fusion of Italian and French cuisine in an elegant atmosphere.</textarea>
+                    </div>
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">
+                        <i class="fas fa-tag"></i>
+                        Cuisine Type
+                    </h3>
+                    <div class="input-group">
+                        <div class="tags-container">
+                            <div class="tag">
+                                Italian <i class="fas fa-times"></i>
+                            </div>
+                            <div class="tag">
+                                French <i class="fas fa-times"></i>
+                            </div>
+                            <div class="tag">
+                                Mediterranean <i class="fas fa-times"></i>
+                            </div>
+                        </div>
+                        <div class="tag-input">
+                            <input type="text" placeholder="Add cuisine type">
+                            <button>Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Location Details
+                </h2>
+                <p class="subsection-title">Where is your restaurant located? You can specify it on the map.</p>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Street Address</label>
+                        <input type="text" id="street"  >
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>City</label>
+                        <input type="text" id="city"  >
+                    </div>
+                </div>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>State/Province</label>
+                        <input type="text" id='state' >
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Postal Code</label>
+                        <input type="text" id="postal"  >
+                    </div>
+                </div>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Latitude</label>
+                        <input type="text" placeholder="e.g., 40.7128" value="40.7128">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Longitude</label>
+                        <input type="text" placeholder="e.g., -74.0060" value="-74.0060">
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>Map Location</label>
+                    <div class="map-placeholder">
+                        <i class="fas fa-map"></i>
+                        <p>Click to set your restaurant location on the map</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-phone"></i>
+                    Contact Information
+                </h2>
+                <p class="subsection-title">How can customers reach your restaurant?</p>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id='phone'  >
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Website URL (Optional)</label>
+                        <input type="url" placeholder="e.g., https://www.yourrestaurant.com" value="https://www.governorbistro.com">
+                    </div>
+                </div>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" id="email"  >
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Social Media Link (e.g., Instagram)</label>
+                        <input type="url" id="social" placeholder="e.g., https://instagram.com/yourrestaurant" value="https://instagram.com/governorbistro">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-clock"></i>
+                    Operating Hours
+                </h2>
+                <p class="subsection-title">Specify your restaurant's daily opening and closing times.</p>
+                
+                <div class="hours-container">
+                    <div class="day-hours">
+                        <div class="day-title">Monday</div>
+                        <div class="time-inputs">
+                            <input type="time" value="09:00">
+                            <input type="time" value="17:00">
+                        </div>
+                    </div>
+                    
+                    <div class="day-hours">
+                        <div class="day-title">Tuesday</div>
+                        <div class="time-inputs">
+                            <input type="time" value="09:00">
+                            <input type="time" value="17:00">
+                        </div>
+                    </div>
+                    
+                    <div class="day-hours">
+                        <div class="day-title">Wednesday</div>
+                        <div class="time-inputs">
+                            <input type="time" value="09:00">
+                            <input type="time" value="17:00">
+                        </div>
+                    </div>
+                    
+                    <div class="day-hours">
+                        <div class="day-title">Thursday</div>
+                        <div class="time-inputs">
+                            <input type="time" value="09:00">
+                            <input type="time" value="17:00">
+                        </div>
+                    </div>
+                    
+                    <div class="day-hours">
+                        <div class="day-title">Friday</div>
+                        <div class="time-inputs">
+                            <input type="time" value="09:00">
+                            <input type="time" value="21:00">
+                        </div>
+                    </div>
+                    
+                    <div class="day-hours">
+                        <div class="day-title">Saturday</div>
+                        <div class="time-inputs">
+                            <input type="time" value="10:00">
+                            <input type="time" value="22:00">
+                        </div>
+                    </div>
+                    
+                    <div class="day-hours">
+                        <div class="day-title">Sunday</div>
+                        <div class="time-inputs">
+                            <input type="time" value="10:00">
+                            <input type="time" value="18:00">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-camera"></i>
+                    Restaurant Photos
+                </h2>
+                <p class="subsection-title">Showcase your restaurant with high-quality images. Recommended: minimum 3 photos.</p>
+                
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p class="upload-text">Drag & drop photos here or click to upload</p>
+                    <p class="upload-subtext">Minimum 3 photos, up to 10MB each</p>
+                </div>
+                
+                <div class="uploaded-photos">
+                    <div class="photo-item">
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudCUyMGludGVyaW9yfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="Restaurant Interior">
+                        <div class="photo-remove">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="photo-item">
+                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cmVzdGF1cmFudCUyMGludGVyaW9yfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="Restaurant Interior">
+                        <div class="photo-remove">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="photo-item">
+                        <img src="https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cmVzdGF1cmFudCUyMGludGVyaW9yfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="Restaurant Interior">
+                        <div class="photo-remove">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="save-btn">Save Restaurant</button>
+        </div>
+    </div>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCyA2J8LvC5g7AytMe-Z9JpTQXCawa7Fao",
+  authDomain: "dinebridge-c997d.firebaseapp.com",
+  projectId: "dinebridge-c997d",
+  storageBucket: "dinebridge-c997d.appspot.com",
+  messagingSenderId: "36472278990",
+  appId: "1:36472278990:web:6c407e4e9bac73fd7ea59f",
+  measurementId: "G-TJVBF3Y8CK"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+document.querySelector('.save-btn').addEventListener('click', async function () {
+  const restaurantName = document.getElementById('restaurantName').value;
+  const description = document.getElementById('description').value;
+  const street = document.getElementById('street').value;
+  const city = document.getElementById('city').value;
+  const state = document.getElementById('state').value;
+  const postal = document.getElementById('postal').value;
+  const phone = document.getElementById('phone').value;
+  const email = document.getElementById('email').value;
+  const social = document.getElementById('social').value;
+
+  const photoFiles = document.querySelectorAll('.uploaded-photos img');
+  const photoBase64 = [];
+  for (let img of photoFiles) {
+    photoBase64.push(img.src);
+  }
+
+  try {
+    // Create restaurant document
+    const docRef = await addDoc(collection(db, "restaurants"), {
+      name: restaurantName,
+      description: description,
+      address: { street, city, state, postal },
+      contact: { phone, email, social },
+      photos: photoBase64,
+      createdAt: new Date()
+    });
+
+    // Save the generated restaurantId inside the document
+    await setDoc(doc(db, "restaurants", docRef.id), {
+      restaurantId: docRef.id
+    }, { merge: true });
+
+    alert(`✅ Restaurant "${restaurantName}" saved! ID: ${docRef.id}`);
+    
+    // Optional: redirect to addMenu.html and pass the ID in URL
+    // window.location.href = `addMenu.html?restaurantId=${docRef.id}`;
+
+  } catch (error) {
+    console.error("Error saving restaurant: ", error);
+    alert("❌ Failed to save restaurant.");
+  }
+});
+// Cuisine Tags Functionality
+        const tagInput = document.querySelector('.tag-input input');
+        const addTagButton = document.querySelector('.tag-input button');
+        const tagsContainer = document.querySelector('.tags-container');
+        
+        addTagButton.addEventListener('click', function() {
+            if (tagInput.value.trim() !== '') {
+                const newTag = document.createElement('div');
+                newTag.className = 'tag';
+                newTag.innerHTML = `
+                    ${tagInput.value} <i class="fas fa-times"></i>
+                `;
+                
+                newTag.querySelector('i').addEventListener('click', function() {
+                    newTag.remove();
+                });
+                
+                tagsContainer.appendChild(newTag);
+                tagInput.value = '';
+            }
+        });
+        
+        tagInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addTagButton.click();
+                e.preventDefault();
+            }
+        });
+        
+        // Remove existing tags
+        document.querySelectorAll('.tag i').forEach(icon => {
+            icon.addEventListener('click', function() {
+                this.parentElement.remove();
+            });
+        });
+        
+        // Photo Upload Functionality
+        const uploadArea = document.getElementById('uploadArea');
+        const uploadedPhotos = document.querySelector('.uploaded-photos');
+        
+        uploadArea.addEventListener('click', function() {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.multiple = true;
+            
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files.length > 0) {
+                    for (let i = 0; i < this.files.length; i++) {
+                        const file = this.files[i];
+                        if (file.size > 10 * 1024 * 1024) {
+                            alert('File size exceeds 10MB: ' + file.name);
+                            continue;
+                        }
+                        
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const photoItem = document.createElement('div');
+                            photoItem.className = 'photo-item';
+                            photoItem.innerHTML = `
+                                <img src="${e.target.result}" alt="Uploaded Photo">
+                                <div class="photo-remove">
+                                    <i class="fas fa-times"></i>
+                                </div>
+                            `;
+                            
+                            photoItem.querySelector('.photo-remove').addEventListener('click', function() {
+                                photoItem.remove();
+                            });
+                            
+                            uploadedPhotos.appendChild(photoItem);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+            });
+            
+            fileInput.click();
+        });
+        
+        // Remove existing photos
+        document.querySelectorAll('.photo-remove').forEach(button => {
+            button.addEventListener('click', function() {
+                this.parentElement.remove();
+            });
+        });
+        
+        // Map Placeholder Click
+        document.querySelector('.map-placeholder').addEventListener('click', function() {
+            alert('Map location selector would open here. This would typically connect to a mapping API like Google Maps.');
+        });
+        
+        // Save Button Functionality
+        document.querySelector('.save-btn').addEventListener('click', function() {
+            const restaurantName = document.querySelector('input[type="text"]').value;
+            alert(`Restaurant "${restaurantName}" has been saved successfully!`);
+        });
+</script>
+
+</body>
+</html>

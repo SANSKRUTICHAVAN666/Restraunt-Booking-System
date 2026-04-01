@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                  url('https://images.unsplash.com/photo-1504674900247-0877df9cc836') center/cover no-repeat;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 0;
+    }
+    h1 {
+      color: white;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 32px;
+      letter-spacing: 1px;
+    }
+
+    /* Dashboard Overview */
+    .dashboard-overview {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 20px;
+      width: 85%;
+      max-width: 1100px;
+      margin-bottom: 35px;
+      align-items: stretch;
+    }
+    .overview-card {
+      background: rgba(255,255,255,0.95);
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .overview-card:hover {
+      transform: translateY(-5px);
+    }
+    .overview-card h3 {
+      margin: 0;
+      font-size: 18px;
+      color: #444;
+    }
+    .overview-card p {
+      font-size: 26px;
+      font-weight: bold;
+      margin-top: 8px;
+      color: #cc0000;
+    }
+
+    /* Chart box */
+    .chart-card {
+      background: rgba(255,255,255,0.95);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+    }
+    canvas {
+      width: 100% !important;
+      height: 220px !important;
+    }
+
+    /* Main Cards */
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      width: 80%;
+      max-width: 1000px;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0px 5px 20px rgba(0,0,0,0.3);
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0px 10px 30px rgba(255,0,0,0.5);
+    }
+    .card h2 {
+      margin-bottom: 15px;
+      font-size: 22px;
+      color: #cc0000;
+    }
+    .card p {
+      color: #333;
+      font-size: 14px;
+    }
+    .icon {
+      font-size: 45px;
+      margin-bottom: 15px;
+      color: #ff4d4d;
+    }
+  </style>
+  <!-- Icons -->
+  <script src="https://kit.fontawesome.com/3f4b5b64d0.js" crossorigin="anonymous"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>Restaurant Dashboard</h1>
+
+  <!-- Dashboard Overview -->
+  <div class="dashboard-overview">
+    <!-- Revenue Chart -->
+    <div class="chart-card">
+      <h3 style="text-align:center; margin-bottom:10px;">Revenue Trend</h3>
+      <canvas id="revenueChart"></canvas>
+    </div>
+
+    <!-- Other Stats -->
+    <div class="overview-card">
+      <h3>Total Menu Items</h3>
+      <p id="totalMenus">85</p>
+    </div>
+    <div class="overview-card">
+      <h3>Tables Booked</h3>
+      <p id="tablesBooked">18</p>
+    </div>
+  </div>
+
+  <!-- Main Cards -->
+  <div class="container">
+    <!-- Add Restaurant -->
+    <div class="card" onclick="location.href='AddResto.html'">
+      <i class="fas fa-utensils icon"></i>
+      <h2>Add Restaurant</h2>
+      <p>Register your restaurant details to the system.</p>
+    </div>
+
+    <!-- Add/Update Menu -->
+    <div class="card" onclick="location.href='MenuManage.html'">
+      <i class="fas fa-hamburger icon"></i>
+      <h2>Add / Update Menu</h2>
+      <p>Manage menu items, pricing, and categories.</p>
+    </div>
+
+    <!-- Add/Update Table Availability -->
+    <div class="card" onclick="location.href='TableAvail.html'">
+      <i class="fas fa-chair icon"></i>
+      <h2>Table Availability</h2>
+      <p>Update available tables and seating capacity.</p>
+    </div>
+  </div>
+
+  <script>
+    // Dummy Stats
+    const stats = {
+      totalMenus: 85,
+      tablesBooked: 18
+    };
+
+    document.getElementById("totalMenus").textContent = stats.totalMenus;
+    document.getElementById("tablesBooked").textContent = stats.tablesBooked;
+
+    // Revenue Trend Chart
+    const ctx = document.getElementById('revenueChart').getContext('2d');
+    const revenueChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+          label: 'Revenue ($)',
+          data: [1200, 1900, 1500, 2200, 3000, 2800],
+          borderColor: '#cc0000',
+          backgroundColor: 'rgba(204,0,0,0.2)',
+          fill: true,
+          tension: 0.3,
+          pointBackgroundColor: '#cc0000'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

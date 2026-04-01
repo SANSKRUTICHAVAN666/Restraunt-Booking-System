@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DineBridge - Discover Restaurants</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0 120px;
+            text-align: center;
+        }
+
+        .header-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 50px;
+            opacity: 0.9;
+        }
+
+        .search-container {
+            background: white;
+            border-radius: 50px;
+            padding: 5px;
+            display: flex;
+            max-width: 700px;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .search-container input {
+            flex: 1;
+            border: none;
+            padding: 20px 25px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            outline: none;
+        }
+
+        .search-container button {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-container button:hover {
+            background: #e55a2b;
+            transform: translateY(-2px);
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            padding: 10px 25px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #ff6b35;
+            border-color: #ff6b35;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #222;
+        }
+
+        .section-subtitle {
+            color: #777;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-img {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .category-info {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .category-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .category-count {
+            color: #777;
+            font-size: 1rem;
+        }
+
+        .restaurants {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .restaurant-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .restaurant-img {
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .restaurant-rating {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .restaurant-rating i {
+            color: #ffc107;
+        }
+
+        .restaurant-info {
+            padding: 25px;
+        }
+
+        .restaurant-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #222;
+        }
+
+        .restaurant-cuisine {
+            color: #ff6b35;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .restaurant-location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #777;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .restaurant-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .feature-tag {
+            background: #f1f5f9;
+            color: #4b5563;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .how-it-works {
+            background: #f1f5f9;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .step {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .step-icon {
+            width: 90px;
+            height: 90px;
+            background: #ff6b35;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .step-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #222;
+        }
+
+        .step-desc {
+            color: #666;
+            font-size: 1.05rem;
+        }
+
+        footer {
+            background: #222;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #ff6b35;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .footer-link {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-link:hover {
+            color: #ff6b35;
+        }
+
+        .copyright {
+            color: #777;
+            font-size: 0.9rem;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .search-container {
+                flex-direction: column;
+                border-radius: 15px;
+                padding: 15px;
+                gap: 15px;
+            }
+            
+            .search-container input,
+            .search-container button {
+                width: 100%;
+                border-radius: 10px;
+            }
+            
+            .filters {
+                gap: 10px;
+            }
+            
+            .filter-btn {
+                padding: 8px 15px;	
+                font-size: 0.9rem;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav style="background: white; border-bottom: 1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+    <div class="container" style="display: flex; align-items: center; justify-content: space-between; max-width:1200px; margin:0 auto; padding:12px 0;">
+        <div style="display:flex; align-items:center; gap:12px;">
+    <img src="logo.png" alt="DineBridge Logo" style="height:55px; width:auto;">
+    <span style="font-size:1.5rem; font-weight:700; color:#ff6b35;">DineBridge</span>
+</div>
+
+
+        <div>
+            <a href="RestoLog.html" style="font-size:1.07rem; padding: 8px 20px; color:#fff; background:#ff6b35; text-decoration:none; font-weight:500; border-radius:20px; margin-left:14px; transition: background 0.2s;">Have a restaurant? Register now</a>
+            <a href="LoginPage.html" style="font-size:1.07rem; padding: 8px 20px; color:#fff; background:#ff6b35; text-decoration:none; font-weight:500; border-radius:20px; margin-left:14px; transition: background 0.2s;">Login | Register</a>
+        </div>
+    </div>
+</nav>
+
+
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>Discover Your Next Favorite Restaurant</h1>
+                <p class="subtitle">Real-time availability, effortless booking, and seamless dining experiences await.</p>
+                
+                <div class="search-container">
+                    <input type="text" placeholder="Search by restaurant name, cuisine, or location">
+                    <button>Search</button>
+                </div>
+                <div id="search-results" class="restaurants"></div>
+
+                
+                <div class="filters">
+                    <button class="filter-btn active">Italian</button>
+                    <button class="filter-btn">Asian Fusion</button>
+                    <button class="filter-btn">Fine Dining</button>
+                    <button class="filter-btn">Casual</button>
+                    <button class="filter-btn">Breakfast</button>
+                    <button class="filter-btn">Lunch</button>
+                    <button class="filter-btn">Dinner</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Explore By Category</h2>
+                <p class="section-subtitle">Find the perfect dining experience for any occasion</p>
+            </div>
+            
+            <div class="categories">
+                <div class="category-card">
+                    <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                    <div class="category-info">
+                        <h3 class="category-name">Chinese Cuisine</h3>
+                        <p class="category-count">42 restaurants</p>
+                    </div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                    <div class="category-info">
+                        <h3 class="category-name">Asian Fusion</h3>
+                        <p class="category-count">28 restaurants</p>
+                    </div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1550305080-4e029753bcf6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                    <div class="category-info">
+                        <h3 class="category-name">Fine Dining</h3>
+                        <p class="category-count">19 restaurants</p>
+                    </div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                    <div class="category-info">
+                        <h3 class="category-name">Cafés & Bistros</h3>
+                        <p class="category-count">35 restaurants</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Featured Restaurants</h2>
+                <p class="section-subtitle">Curated selections of top-rated dining experiences</p>
+            </div>
+            
+            <div class="restaurants">
+               <div class="restaurant-card">
+                    <div class="restaurant-img" style="background-image: url('DPhome.webp');">
+                        <div class="restaurant-rating">
+                            <i class="fas fa-star"></i>
+                            <span>4.8</span>
+                        </div>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">D.P's</h3>
+                        <span class="restaurant-cuisine">South Indian</span>
+                        <p class="restaurant-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Mumbai, Matunga(E)
+                        </p>
+                        <div class="restaurant-features">
+                            <span class="feature-tag">Pav Bhaji</span>
+                            <span class="feature-tag">Dosa's</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="restaurant-card">
+                    <div class="restaurant-img" style="background-image: url('RKhome.webp');">
+                        <div class="restaurant-rating">
+                            <i class="fas fa-star"></i>
+                            <span>4.5</span>
+                        </div>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Radha Krishna</h3>
+                        <span class="restaurant-cuisine">North Indian</span>
+                        <p class="restaurant-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Mumbai, Ghatkopar(W)
+                        </p>
+                        <div class="restaurant-features">
+                            <span class="feature-tag">Vegetarian Options</span>
+                            <span class="feature-tag">Spicy Specialties</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="restaurant-card">
+                    <div class="restaurant-img" style="background-image: url('bgt.jpg');">
+                        <div class="restaurant-rating">
+                            <i class="fas fa-star"></i>
+                            <span>4.5</span>
+                        </div>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Bhagat Tarachand</h3>
+                        <span class="restaurant-cuisine">Authentic thali's</span>
+                        <p class="restaurant-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Andheri
+                        </p>
+                        <div class="restaurant-features">
+                            <span class="feature-tag">Best Thali's</span>
+                            <span class="feature-tag">Ice-Creams</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="restaurant-card">
+                    <div class="restaurant-img" style="background-image: url('DPhome.webp');">
+                        <div class="restaurant-rating">
+                            <i class="fas fa-star"></i>
+                            <span>4.8</span>
+                        </div>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">D.P's</h3>
+                        <span class="restaurant-cuisine">South Indian</span>
+                        <p class="restaurant-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Mumbai, Matunga(E)
+                        </p>
+                        <div class="restaurant-features">
+                            <span class="feature-tag">Pav Bhaji</span>
+                            <span class="feature-tag">Dosa's</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="restaurant-card">
+                    <div class="restaurant-img" style="background-image: url('https://images.unsplash.com/photo-1563612116625-3012372fccce?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');">
+                        <div class="restaurant-rating">
+                            <i class="fas fa-star"></i>
+                            <span>4.6</span>
+                        </div>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">Zen Garden Sushi</h3>
+                        <span class="restaurant-cuisine">Japanese</span>
+                        <p class="restaurant-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            San Francisco, CA
+                        </p>
+                        <div class="restaurant-features">
+                            <span class="feature-tag">Omakase</span>
+                            <span class="feature-tag">Sake Bar</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="restaurant-card">
+                    <div class="restaurant-img" style="background-image: url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');">
+                        <div class="restaurant-rating">
+                            <i class="fas fa-star"></i>
+                            <span>4.7</span>
+                        </div>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">The Farmhouse Grill</h3>
+                        <span class="restaurant-cuisine">American</span>
+                        <p class="restaurant-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Austin, TX
+                        </p>
+                        <div class="restaurant-features">
+                            <span class="feature-tag">Farm-to-Table</span>
+                            <span class="feature-tag">Craft Cocktails</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">How DineBridge Works</h2>
+                <p class="section-subtitle">A seamless dining experience in three simple steps</p>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-search-location"></i>
+                    </div>
+                    <h3 class="step-title">Discover</h3>
+                    <p class="step-desc">Find amazing restaurants near you, filter by cuisine, price, and availability.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3 class="step-title">Book</h3>
+                    <p class="step-desc">Effortlessly reserve your table in real-time with just a few clicks.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3 class="step-title">Dine & Pay</h3>
+                    <p class="step-desc">Enjoy your meal and pay seamlessly via QR code or in-app ordering.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">DineBridge</div>
+                <p>Discover, book, and enjoy the perfect dining experience</p>
+                
+                
+                <div class="footer-links">
+                    <a href="#" class="footer-link">About</a>
+                    <a href="#" class="footer-link">Restaurants</a>
+                    <a href="#" class="footer-link">Blog</a>
+                    <a href="#" class="footer-link">Careers</a>
+                    <a href="#" class="footer-link">Contact</a>
+                </div>
+                
+                <p class="copyright">© 2025 DineBridge. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script type="module">
+  // Import Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { 
+    getFirestore, 
+    collection, 
+    getDocs, 
+    query 
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCyA2J8LvC5g7AytMe-Z9JpTQXCawa7Fao",
+    authDomain: "dinebridge-c997d.firebaseapp.com",
+    databaseURL: "https://dinebridge-c997d-default-rtdb.firebaseio.com",
+    projectId: "dinebridge-c997d",
+    storageBucket: "dinebridge-c997d.firebasestorage.app",
+    messagingSenderId: "36472278990",
+    appId: "1:36472278990:web:6c407e4e9bac73fd7ea59f",
+    measurementId: "G-TJVBF3Y8CK"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Filter button toggle
+  document.querySelectorAll('.filter-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  const searchInput = document.querySelector('.search-container input');
+  const searchBtn = document.querySelector('.search-container button');
+  const resultsDiv = document.getElementById('search-results');
+
+  // Function to search restaurants
+  async function searchRestaurants() {
+    const searchText = searchInput.value.trim().toLowerCase();
+    if (!searchText) {
+      resultsDiv.innerHTML = "<p>❌ Please enter something to search.</p>";
+      return;
+    }
+
+    resultsDiv.innerHTML = "<p>🔍 Searching...</p>";
+
+    try {
+      const q = query(collection(db, "restaurants"));
+      const querySnapshot = await getDocs(q);
+
+      let results = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const name = data.name?.toLowerCase() || "";
+        const city = data.address?.city?.toLowerCase() || "";
+        const state = data.address?.state?.toLowerCase() || "";
+
+        if (name.includes(searchText) || city.includes(searchText) || state.includes(searchText)) {
+          results.push(data);
+        }
+      });
+
+      if (results.length === 0) {
+        resultsDiv.innerHTML = "<p>😔 No restaurants found.</p>";
+        return;
+      }
+
+      resultsDiv.innerHTML = results.map(r => `
+        <div class="restaurant-card">
+          <div class="restaurant-img" style="background-image: url('${r.photos && r.photos.length ? r.photos[0] : 'https://via.placeholder.com/300'}');"></div>
+          <div class="restaurant-info">
+            <h3 class="restaurant-name">${r.name}</h3>
+            <p class="restaurant-location">
+              <i class="fas fa-map-marker-alt"></i>
+              ${r.address?.city || ''}, ${r.address?.state || ''}
+            </p>
+          </div>
+        </div>
+      `).join('');
+
+    } catch (error) {
+      console.error("Error searching restaurants: ", error);
+      resultsDiv.innerHTML = "<p>❌ Something went wrong. Check console.</p>";
+    }
+  }
+
+  // Event listener
+  searchBtn.addEventListener('click', searchRestaurants);
+</script>
+
+</body>
+</html>

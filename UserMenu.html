@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Menu - DineBridge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* [Include previous CSS here exactly as before] */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    body {
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #ff6b35;
+    }
+    .menu-categories {
+      display: grid;
+      gap: 30px;
+    }
+    .category-section {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    .category-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid #ff6b35;
+      display: inline-block;
+    }
+    .menu-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .menu-item {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 20px;
+      border: 2px solid #e9ecef;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .menu-item:hover {
+      border-color: #ff6b35;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(255, 107, 53, 0.08);
+    }
+    .item-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+    }
+    .item-price {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #ff6b35;
+      margin-bottom: 10px;
+    }
+    .item-ingredients {
+      font-size: 0.95rem;
+      color: #666;
+      line-height: 1.4;
+      margin-bottom: 16px;
+    }
+    .add-to-table-btn {
+      background: #ff6b35;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      box-shadow: 0 2px 7px rgba(255, 107, 53, 0.08);
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+    }
+    .add-to-table-btn:hover {
+      background: #e55a2b;
+    }
+    /* Table Items Cart */
+    .cart-panel {
+      position: fixed;
+      top: 45px;
+      right: 30px;
+      width: 340px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 24px 0 rgb(60 72 88 / 10%);
+      border: 2px solid #eee;
+      z-index: 2;
+      padding: 22px 18px 20px 18px;
+      max-height: 78vh;
+      overflow-y: auto;
+    }
+    .cart-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #ff6b35;
+      margin-bottom: 16px;
+    }
+    .cart-list {
+      margin-bottom: 8px;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1.5px dashed #eee;
+      margin-bottom: 8px;
+      padding-bottom: 4px;
+    }
+    .cart-item-name {
+      font-size: 1.07rem;
+    }
+    .cart-item-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cart-qty-btn {
+      width: 26px;
+      height: 26px;
+      background: #f8f9fa;
+      color: #ff6b35;
+      border: 1.5px solid #e8b196;
+      border-radius: 50%;
+      font-size: 1.15rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .cart-qty-btn:hover {
+      background: #ffedd9;
+    }
+    .cart-total {
+      font-weight: 700;
+      color: #348445;
+      font-size: 1.12rem;
+      text-align: right;
+      margin: 12px 0;
+    }
+    .cart-table-row {
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .table-label {
+      font-size: 1rem;
+      color: #777;
+    }
+    .cart-table-input {
+      border-radius: 7px;
+      border: 1.5px solid #eee;
+      padding: 7px 12px;
+      width: 110px;
+      font-size: 1rem;
+    }
+    .place-order-btn {
+      background: #348445;
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      padding: 15px 0;
+      display: block;
+      width: 100%;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 14px;
+      transition: background 0.2s;
+      box-shadow: 0 3px 14px rgba(52, 132, 69, 0.13);
+    }
+    .place-order-btn:hover {
+      background: #226641;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+    @media (max-width: 900px) {
+      .cart-panel {
+        position: static;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 5px;
+      }
+      .cart-panel {
+        box-shadow: none;
+        border: 1.5px solid #eee;
+      }
+      .header h1 {
+        font-size: 1.17rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Menu</h1>
+    </div>
+    <div class="menu-categories" id="menuCategories"></div>
+  </div>
+
+  <div class="cart-panel" id="cartPanel">
+    <div class="cart-title">Table Items</div>
+    <div class="cart-list" id="cartList"></div>
+    <div class="cart-total" id="cartTotal"></div>
+    <div class="cart-table-row">
+      <span class="table-label">Table Number:</span>
+      <input
+        type="number"
+        min="1"
+        id="tableNumber"
+        class="cart-table-input"
+        placeholder="e.g., 10"
+      />
+    </div>
+    <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      collection,
+      addDoc,
+      serverTimestamp,
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCyA2J8LvC5g7AytMe-Z9JpTQXCawa7Fao",
+      authDomain: "dinebridge-c997d.firebaseapp.com",
+      projectId: "dinebridge-c997d",
+      storageBucket: "dinebridge-c997d.appspot.com",
+      messagingSenderId: "36472278990",
+      appId: "1:36472278990:web:6c407e4e9bac73fd7ea59f",
+      measurementId: "G-TJVBF3Y8CK",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    let currentUser = null;
+    let menuItems = {};
+    let cart = [];
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUser = user;
+        await loadMenu();
+      } else {
+        alert("Please login first!");
+      }
+    });
+
+    async function loadMenu() {
+      if (!currentUser) return;
+      const docRef = doc(db, "restaurants", currentUser.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        menuItems = docSnap.data().menu || {};
+        renderMenuItems();
+      } else {
+        menuItems = {};
+        renderMenuItems();
+      }
+    }
+
+    function renderMenuItems() {
+      const container = document.getElementById("menuCategories");
+      container.innerHTML = "";
+      if (Object.keys(menuItems).length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div style="font-size: 4rem; margin-bottom: 20px; color: #ccc;">🍽️</div>
+            <h3>No menu items available</h3>
+            <p>Please check back later!</p>
+          </div>
+        `;
+        return;
+      }
+      for (const category in menuItems) {
+        const categorySection = document.createElement("div");
+        categorySection.className = "category-section";
+        categorySection.innerHTML = `
+          <h3 class="category-title">${category}</h3>
+          <div class="menu-items">
+            ${menuItems[category]
+              .map(
+                (item, idx) => `
+              <div class="menu-item">
+                <div class="item-name">${item.name}</div>
+                <div class="item-price">₹${item.price.toFixed(2)}</div>
+                <div class="item-ingredients"><strong>Ingredients:</strong> ${
+                  item.ingredients
+                }</div>
+                <button class="add-to-table-btn" onclick="addToCart('${category}',${idx})">Add to Table</button>
+              </div>
+            `
+              )
+              .join("")}
+          </div>
+        `;
+        container.appendChild(categorySection);
+      }
+    }
+
+    window.addToCart = function (category, idx) {
+      const item = menuItems[category][idx];
+      const existing = cart.find(
+        (i) => i.name === item.name && i.category === category
+      );
+      if (existing) existing.qty += 1;
+      else cart.push({ ...item, category, qty: 1 });
+      renderCart();
+    };
+
+    window.changeQty = function (index, delta) {
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) cart.splice(index, 1);
+      renderCart();
+    };
+
+    function renderCart() {
+      const cartList = document.getElementById("cartList");
+      const cartTotal = document.getElementById("cartTotal");
+      if (!cart.length) {
+        cartList.innerHTML = `<em>No items in your table yet.</em>`;
+        cartTotal.textContent = "";
+        return;
+      }
+      let total = 0;
+      cartList.innerHTML = "";
+      cart.forEach((item, i) => {
+        total += item.qty * item.price;
+        cartList.innerHTML += `
+          <div class="cart-item">
+            <span class="cart-item-name">${item.name} (${item.category})</span>
+            <div class="cart-item-controls">
+              <button class="cart-qty-btn" onclick="changeQty(${i}, -1)">-</button>
+              <span>${item.qty}</span>
+              <button class="cart-qty-btn" onclick="changeQty(${i}, 1)">+</button>
+              <span style="margin-left:12px;color:#ff6b35;font-weight:700;">₹${(
+                item.qty * item.price
+              ).toFixed(0)}</span>
+            </div>
+          </div>
+        `;
+      });
+      cartTotal.textContent = `Total: ₹${total.toFixed(2)}`;
+    }
+
+   async function placeOrder() {
+  console.log('Place Order button clicked');  // Debug line
+  const tableNum = document.getElementById("tableNumber").value.trim();
+  if (!cart.length) {
+    alert("Add at least one item to your table.");
+    return;
+  }
+  if (!tableNum) {
+    alert("Please enter your table number.");
+    return;
+  }
+  try {
+    console.log('Submitting order to Firestore');  // Debug line
+    await addDoc(collection(db, "orders"), {
+      userId: currentUser.uid,
+      tableNumber: tableNum,
+      items: cart,
+      total: cart.reduce((t, i) => t + i.qty * i.price, 0),
+      status: "pending",
+      createdAt: serverTimestamp(),
+    });
+    alert(`Order placed!\nTable: ${tableNum}\nItems: ${cart.length}\nTotal: ₹${cart.reduce(
+      (t, i) => t + i.qty * i.price,
+      0
+    )}`);
+    cart = [];
+    renderCart();
+    document.getElementById("tableNumber").value = "";
+  } catch (error) {
+    console.error("Error placing order:", error);
+    alert("There was a problem placing your order. Please try again.");
+  }
+}
+window.placeOrder = placeOrder;
+</script>
+
+</body>
+</html>

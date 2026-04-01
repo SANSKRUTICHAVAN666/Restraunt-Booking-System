@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Restaurant Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80') no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0px 8px 20px rgba(0,0,0,0.6);
+      width: 350px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .login-container h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 32px;
+      color: #ff4d4d;
+      margin-bottom: 10px;
+    }
+
+    .login-container p {
+      font-size: 14px;
+      margin-bottom: 20px;
+      color: #ddd;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background: #ff4d4d;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: #e63c3c;
+    }
+    
+    a {
+    color: red;
+    text-decoration: none;
+    }
+
+    .alt {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .alt a {
+      color: #ffcc00;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .error {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #ffcccb;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <form id="registerForm">
+            <input type="email" id="registerEmail" placeholder="Email" required>
+            <input type="password" id="registerPassword" placeholder="Password" required>
+            <button type="submit">Register</button>
+            <p id="registerError" class="error"></p>
+        </form>
+    <div class="alt">
+      <p>Or sign in with:</p>
+      <button style="background:#4285F4;" onclick="googleLogin()">Google</button>
+  </form>
+    </div>
+  </div>
+    <script type="module" >
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { getAuth,signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCyA2J8LvC5g7AytMe-Z9JpTQXCawa7Fao",
+    authDomain: "dinebridge-c997d.firebaseapp.com",
+    databaseURL: "https://dinebridge-c997d-default-rtdb.firebaseio.com",
+    projectId: "dinebridge-c997d",
+    storageBucket: "dinebridge-c997d.firebasestorage.app",
+    messagingSenderId: "36472278990",
+    appId: "1:36472278990:web:6c407e4e9bac73fd7ea59f",
+    measurementId: "G-TJVBF3Y8CK"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth=getAuth();
+  
+
+// Register
+document.getElementById('registerForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
+
+  createUserWithEmailAndPassword(auth,email, password)
+        .then(() => {
+            window.alert("register successfull")
+            window.location.href = "LoginPage.html";
+        })
+        .catch((error) => {
+            document.getElementById('registerError').innerText = error.message;
+        });
+});
+
+
+</script>
+</body>
+</html>
